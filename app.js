@@ -1,12 +1,12 @@
 var express = require('express');
 var app = express();
 
-app.use('/static', express.static('/public'));
+app.use(express.static(__dirname + '/public'));
 
-app.get('/index', function (req, res) {
-  res.send('index');
+app.get('/', function (req, res) {
+  res.redirect('main/login.html');
 });
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Tourist agency app listening on port 3000!');
 });
