@@ -1,4 +1,4 @@
-module.exports = (Sequelize, sequelize, Country) => {
+module.exports = (Sequelize, sequelize, Country, Data) => {
     return sequelize.define('resorts', {
         id:{
             type: Sequelize.INTEGER,
@@ -10,6 +10,14 @@ module.exports = (Sequelize, sequelize, Country) => {
             type: Sequelize.INTEGER,
             references: {
                 model: Country,
+                key: 'id',
+                deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+            }
+        },
+        id_video: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: Data,
                 key: 'id',
                 deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
             }

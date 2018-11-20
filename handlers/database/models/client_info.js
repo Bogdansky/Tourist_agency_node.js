@@ -1,4 +1,4 @@
-module.exports = (Sequelize, sequelize, Client) => {
+module.exports = (Sequelize, sequelize, Client, Data) => {
     return sequelize.define('client_info', {
         id:{
             type: Sequelize.INTEGER,
@@ -19,6 +19,14 @@ module.exports = (Sequelize, sequelize, Client) => {
             type: Sequelize.STRING,
             allowNull: true
         },
-        birthday: Sequelize.DATE
+        birthday: Sequelize.DATE,
+        id_photo: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: Data,
+                key: 'id',
+                deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+            }
+        }
     });
 };

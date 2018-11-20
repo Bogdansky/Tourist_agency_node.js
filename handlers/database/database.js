@@ -6,23 +6,25 @@ const ClientInfo = require('./models/client_info');
 const Resort = require('./models/resort');
 const Tour = require('./models/tour');
 const Order = require('./models/order');
+const Data = require('./models/data');
 
 module.exports = (Sequelize, config) => {
     const sequelize = new Sequelize('sequelize','root','55911955',config);
 
     // сущности
+    const data = Data(Sequelize,sequelize);
     const client = Client(Sequelize, sequelize);
     const country = Country(Sequelize, sequelize);
     const manager = Manager(Sequelize, sequelize);
     const abode = Abode(Sequelize, sequelize);
     const clientInfo = ClientInfo(Sequelize, sequelize, clients);
-    const resort = Resort(Sequelize, sequelize, countries);
+    const resort = Resort(Sequelize, sequelize, countries, data);
     const tour = Tour(Sequelize, sequelize, resorts, managers);
     const order = Order(Sequelize, sequelize, client, tours, abodes);
 
     synchronizeDB([turtles,weapons,pizzas]);
 
-    // TODO: создание связей между таблицами
+    // TODO: создание связей между таблицами (написать связи таблиц с data)
     client.hasOne(clientInfo, {foreignKey: 'client_id'});
     resort.hasOne(country, {foreignKey:'id_country'});
     client.hasMany(order, {foreignKey: 'client_id'});
@@ -31,6 +33,7 @@ module.exports = (Sequelize, config) => {
     country.hasOne(resort, {foreignKey: 'id_country'});
     resort.hasMany(tour, {foreignKey: 'resort_id'});
     manager.hasMany(tour, {foreignKey: 'id_manager'});
+
 
     return {
         client: client,
@@ -41,6 +44,7 @@ module.exports = (Sequelize, config) => {
         resort: resort,
         tour: tour,
         order: order,
+        data: data,
 
         sequelize: sequelize,
         Sequelize: Sequelize,
