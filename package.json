@@ -1,7 +1,9 @@
 {
-  "name": "$name$",
-  "version": "$version$",
+  "name": "Tourist_agency_node.js",
+  "version": "1.0.0",
   "dependencies": {
-    $END$
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "sequelize": "^4.41.2"
   }
 }
