@@ -17,14 +17,14 @@ module.exports = (Sequelize, config) => {
     const country = Country(Sequelize, sequelize);
     const manager = Manager(Sequelize, sequelize);
     const abode = Abode(Sequelize, sequelize);
-    const clientInfo = ClientInfo(Sequelize, sequelize, clients);
+    const clientInfo = ClientInfo(Sequelize, sequelize, clients, data);
     const resort = Resort(Sequelize, sequelize, countries, data);
     const tour = Tour(Sequelize, sequelize, resorts, managers);
     const order = Order(Sequelize, sequelize, client, tours, abodes);
 
     synchronizeDB([turtles,weapons,pizzas]);
 
-    // TODO: создание связей между таблицами (написать связи таблиц с data)
+    // TODO: создание связей между таблицами 
     client.hasOne(clientInfo, {foreignKey: 'client_id'});
     resort.hasOne(country, {foreignKey:'id_country'});
     client.hasMany(order, {foreignKey: 'client_id'});
@@ -33,7 +33,8 @@ module.exports = (Sequelize, config) => {
     country.hasOne(resort, {foreignKey: 'id_country'});
     resort.hasMany(tour, {foreignKey: 'resort_id'});
     manager.hasMany(tour, {foreignKey: 'id_manager'});
-
+    data.hasOne(resort, {foreignKey: 'id_video'});
+    data.hasOne(clientInfo, {foreignKey: 'id_photo'});
 
     return {
         client: client,
