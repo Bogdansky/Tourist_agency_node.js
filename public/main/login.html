@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 </head>
-
 <body>
     <div id="login-form">
             <table>
@@ -24,10 +23,10 @@
                 </tr>
             </table>
         <fieldset>
-            <form action="javascript:void(0);" method="get">
-                <input type="email" placeholder="Логин"> 
-                <input type="password" placeholder="Пароль"> 
-                <input type="submit" value="ВОЙТИ">
+            <form name="login_form" method="POST" action="/login">
+                <input type="text" name="login" placeholder="Логин"> 
+                <input type="password" name="password" placeholder="Пароль">
+                <button id="login_action">Войти</button>
             </form>
         </fieldset>
     </div> 

@@ -1,7 +1,11 @@
 {
-  "host": "localhost",
+  "host": "USER-PC",
   "dialect": "mssql",
+  "port": 1433,
   "operatorsAliases": false,
+  "dialectOptions": {
+    "instanceName": "MSSQL"
+  },
   "pool": {
     "max": 5,
     "min": 0,

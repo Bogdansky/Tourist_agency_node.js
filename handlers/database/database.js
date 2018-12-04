@@ -9,8 +9,8 @@ const Order = require('./models/order');
 const Data = require('./models/data');
 
 module.exports = (Sequelize, config) => {
-    const sequelize = new Sequelize('sequelize','root','55911955',config);
-
+    const sequelize = new Sequelize('tourist_agency','root','55911955', config);
+    
     // сущности
     const data = Data(Sequelize,sequelize);
     const client = Client(Sequelize, sequelize);
@@ -22,7 +22,7 @@ module.exports = (Sequelize, config) => {
     const tour = Tour(Sequelize, sequelize, resorts, managers);
     const order = Order(Sequelize, sequelize, client, tours, abodes);
 
-    synchronizeDB([turtles,weapons,pizzas]);
+    synchronizeDB([data, client, country, manager, abode, clientInfo, resort, tour, order]);
 
     // TODO: создание связей между таблицами 
     client.hasOne(clientInfo, {foreignKey: 'client_id'});
@@ -54,6 +54,6 @@ module.exports = (Sequelize, config) => {
 
 function synchronizeDB(tables){
     tables.forEach((table) => {
-        table.sync({force:true});
+        table.sync();
     })
 }

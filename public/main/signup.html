@@ -5,6 +5,8 @@
 	<title>Регистрация | Sign up</title>
 	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="./javascript/jquery.js"></script>
+    <script type="text/javascript" src="./javascript/signup.js"></script>
 </head>
 
 <body>
@@ -24,12 +26,10 @@
                 </tr>
             </table>
         <fieldset>
-            <form action="javascript:void(0);" method="get">
-                <input name="name" type="text" placeholder="Имя">
-                <input name="surname" type="text" placeholder="Фамилия">
-                <input name="email" type="email" placeholder="Логин"> 
+            <form name="sign_up" method="POST" action="/signup">
+                <input name="login" type="text" placeholder="Логин">
                 <input name="password" type="password" placeholder="Пароль">
-                <input type="submit" value="ЗАРЕГИСТРИРОВАТЬСЯ">
+                <button id="up_action" type="submit">Зарегистрироваться</button >
             </form>
         </fieldset>
     </div> 
