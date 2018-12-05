@@ -27,9 +27,57 @@ module.exports.signUp = async (login, password) => {
 module.exports.getManagers = async () => {
     let result = await admin.query('exec get_managers', {raw: true});
     if (result[0][0].status){
-        return {status}
+        return {status: result[0][0].status}
     }
     else{
         return result[0];
     }
+}
+
+module.exports.addManager = async (json) => {
+    let result = 
+    await admin.query(`exec add_manager '${json.surname}','${json.name}','${json.patronymic}','${json.login}',0x${json.password}`);
+    console.log(result[0][0])
+    return result[0][0];
+}
+
+module.exports.removeManager = async (id) => {
+    let result = await admin.query(`exec remove_manager ${id}`);
+    console.log(result[0][0]);
+    if (result[0][0].status){
+        return {"status": result[0][0].status};
+    }
+    else{
+        return {"error": result[0][0].error};
+    }
+}
+
+module.exports.getResort = async (id) => {
+    try{
+        let result = await user.query(`exec get_resort ${id}`, {raw: true});
+        let answer = result[0][0];
+        console.log(answer);
+        if (answer){
+            if (answer.video != null){
+                answer.video = getVideo(answer.video);
+            }
+            return answer;
+        }
+        else{
+            return {error: "Неожиданная ошибка"};
+        }
+    }
+    catch(error){
+        return {error: "Неожиданная ошибка"};
+    }
+}
+
+async function getVideo(id){
+    let result = await user.query(`exec get_file ${id}`, {raw: true});
+    return result[0][0];
+}  
+
+module.exports.showTours = async () => {
+    let result = await user.query('exec show_tours',{raw: true});
+    return result[0] ? result[0] : {error: "Нет туров"};
 }

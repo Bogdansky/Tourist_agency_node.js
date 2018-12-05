@@ -2,22 +2,50 @@
     <head>
         <link href="styles/main.css" rel="stylesheet" type="text/css" media="all">
         <meta charset="utf8">
+        <script src="./javascript/code.js"></script>
+        <script src="./javascript/jquery.js"></script>
     </head>
     <body>
         <div id="choice">
             <div id="buttons">
                 <div id="user_buttons">
-                    <button name="personal_area"><img src="images/personal_area.png" style="width: 200px; height: 200px"></button>
-                    <button name="orders"><img style="width: 200px; height: 200px" src="images/order.png"></button>
+                    <button name="personal_area" onclick="showPersonal()"><img src="images/personal_area.png" style="width: 200px; height: 200px"></button>
+                    <button name="orders" onclick="showTours()"><img style="width: 200px; height: 200px" src="images/order.png"></button>
                 </div>
-                <button name="logout"><img style="width: 200px; height: 200px" src="images/logout.png"></button>
+                <button name="logout" onclick="logout()"><img style="width: 200px; height: 200px" src="images/logout.png"></button>
             </div>
         </div>
-        <div id="personal_area">
+        <div id="personal_area" hidden="true">
+            <div>
+                <table>
+                    <thead>
+                        <th>Название</th>
+                        <th>Дата начала</th>
+                        <th>Длительность</th>
+                        <th>Дата покупки</th>
+                        <th>Класс отеля</th>
+                        <th>Стоимость</th>
+                    </thead>
+                    <tbody id="orders">
 
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div id="orders">
-            
+        <div id="tours_area" hidden="true">
+            <button onclick="showResort()">Показать курорт</button>
+                <div>
+                    <table>
+                        <thead>
+                            <th>Название</th>
+                            <th>Длительность</th>
+                            <th>Действие</th>
+                        </thead>
+                        <tbody id="tours">
+                            
+                        </tbody>
+                    </table>
+                </div>
         </div>
     </body>
 </html>
