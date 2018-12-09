@@ -14,11 +14,9 @@ window.onload = () => {
         $.ajax({
             type: "POST",
             url: "/admin/remove",
-            data: JSON.stringify(data),
-            dataType: "text",
-            contentType: "application/json",
+            data: data,
             success: (result) => {
-                data = JSON.parse(result);
+                data = result;
                 alert(data['status'] ? data['status'] : data['error']);
                 if (data.status){
                     document.getElementById(id).remove();
@@ -37,14 +35,12 @@ window.onload = () => {
         $.ajax({
             type: "POST",
             url: "/admin/create",
-            data: JSON.stringify(manager),
-            dataType: "json",
-            contentType: "application/json",
+            data: manager,
             success: (data) => {
-                result = JSON.parse(data);
-                alert(result["message"] ? result["message"] : result["error"]);
-                if (result["message"]){
+                alert(data["message"] ? data["message"] : data["error"]);
+                if (data["message"]){
                     delete data.message;
+                    delete data.password;
                     appendManagerCell(manager);
                 }
             }

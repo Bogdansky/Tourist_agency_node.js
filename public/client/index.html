@@ -10,12 +10,22 @@
             <div id="buttons">
                 <div id="user_buttons">
                     <button name="personal_area" onclick="showPersonal()"><img src="images/personal_area.png" style="width: 200px; height: 200px"></button>
-                    <button name="orders" onclick="showTours()"><img style="width: 200px; height: 200px" src="images/order.png"></button>
+                    <button name="tours" onclick="showTours()"><img style="width: 200px; height: 200px" src="images/order.png"></button>
                 </div>
                 <button name="logout" onclick="logout()"><img style="width: 200px; height: 200px" src="images/logout.png"></button>
             </div>
         </div>
         <div id="personal_area" hidden="true">
+            <h2>Личный кабинет</h2>
+            <form>
+                <input type="text" name="surname">
+                <input type="text" name="name">
+                <input type="text" name="patronymic">
+                <input type="date" name="birthday">
+                <img id="photo" src="images/no.png">
+                <input type="file" accept="image/jpeg,image/png" name="photo">
+                <button onclick="updateClientInfo()">Изменить</button>
+            </form>
             <div>
                 <table>
                     <thead>
@@ -33,19 +43,30 @@
             </div>
         </div>
         <div id="tours_area" hidden="true">
+            <h2>Туры</h2>
             <button onclick="showResort()">Показать курорт</button>
-                <div>
-                    <table>
-                        <thead>
-                            <th>Название</th>
-                            <th>Длительность</th>
-                            <th>Действие</th>
-                        </thead>
-                        <tbody id="tours">
-                            
-                        </tbody>
-                    </table>
-                </div>
+            <button onclick="makeOrder()">Сделать заказ</button>
+            <input type="date" id="date" value="2018-12-06">
+            <label>Класс отеля</label>
+            <select id="hotel_class">
+                <option value="1">Одна звезда</option>
+                <option value="2">Две звезды</option>
+                <option value="3">Три звезды</option>
+                <option value="4">Четыре звезды</option>
+                <option value="5">Пять звёзд</option>
+            </select>
+            <div>
+                <table>
+                    <thead>
+                        <th>Название</th>
+                        <th>Длительность</th>
+                        <th>Действие</th>
+                    </thead>
+                    <tbody id="tours">
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>

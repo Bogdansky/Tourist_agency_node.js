@@ -58,9 +58,6 @@ module.exports.getResort = async (id) => {
         let answer = result[0][0];
         console.log(answer);
         if (answer){
-            if (answer.video != null){
-                answer.video = getVideo(answer.video);
-            }
             return answer;
         }
         else{
@@ -72,7 +69,7 @@ module.exports.getResort = async (id) => {
     }
 }
 
-async function getVideo(id){
+module.exports.getFile = async (id) => {
     let result = await user.query(`exec get_file ${id}`, {raw: true});
     return result[0][0];
 }  
@@ -80,4 +77,53 @@ async function getVideo(id){
 module.exports.showTours = async () => {
     let result = await user.query('exec show_tours',{raw: true});
     return result[0] ? result[0] : {error: "Нет туров"};
+}
+
+
+module.exports.getCost = async (tour, abode) => {
+    let result = await user.query(`exec getCosts ${tour},${abode}`,{raw: true});
+    return result[0][0].error ? {error: result[0][0].error} : result[0][0];
+}
+
+module.exports.makeOrder = async (client, tour, cost, start, abode) => {
+    let result = await user.query(`exec make_order ${client},${tour},${cost},'${start}',${abode}`, {raw: true});
+    return result[0][0].error ? {error: result[0][0].error} : result[0][0];
+}
+
+module.exports.showOrders = async (client) => {
+    let result = await user.query(`exec show_orders ${client}`,{raw: true});
+    return result[0];
+}
+
+module.exports.getClientInfo = async (client) => {
+    let result = await user.query(`exec get_client_info ${client}`);
+    if (result[0][0].error){
+        return {error: result[0][0].error};
+    }
+    else{
+        return result[0][0];
+    }
+}
+
+module.exports.updateClientInfo = async (client,surname,name,patronymic,birthday,photo) => {
+    try{
+        let result;
+        if (photo){
+            result = await 
+                user.query(`exec update_client ${client},'${surname}','${name}','${patronymic}','${birthday}',${photo}`, {raw: true}); 
+        }
+        else{
+            result = await 
+                user.query(`exec update_client ${client},'${surname}','${name}','${patronymic}','${birthday}'`, {raw: true});
+        }
+        if(result[0][0].error){
+            return {error: result[0][0].error};
+        }
+        else{
+            return result[0][0];
+        }
+    }
+    catch(error){
+        return {error};
+    }
 }

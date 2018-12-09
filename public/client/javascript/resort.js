@@ -23,7 +23,7 @@ function outputResort(resort){
     }
     if (resort.video){
         let source = document.createElement('source');
-        source.src = resort.video.name;
+        source.src = resort.videoName;
         document.getElementById('video').appendChild(source);  
     }
 }
