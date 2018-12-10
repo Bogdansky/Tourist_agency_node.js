@@ -2,22 +2,87 @@
     <head>
         <link href="styles/main.css" rel="stylesheet" type="text/css" media="all">
         <meta charset="utf8">
+        <script src="./javascript/code.js"></script>
+        <script src="./javascript/jquery.js"></script>
     </head>
     <body>
         <div id="choice">
             <div id="buttons">
                 <div id="user_buttons">
-                    <button name="personal_area"><img src="images/personal_area.png" style="width: 200px; height: 200px"></button>
-                    <button name="orders"><img style="width: 200px; height: 200px" src="images/order.png"></button>
+                    <button name="client_area" onclick="showClients()"><img style="width: 200px; height: 200px" src="images/client.png"></button>
+                    <button name="tour_area" onclick="showTours()"><img style="width: 200px; height: 200px" src="images/order.png"></button>
+                    <button name="resort_area" onclick="showResorts()"><img style="width: 200px; height: 200px" src="images/resort.png"></button>
+                    <button name="country_area" onclick="showCountries()"><img style="width: 200px; height: 200px" src="images/country.png"></button>
                 </div>
-                <button name="logout"><img style="width: 200px; height: 200px" src="images/logout.png"></button>
+                <button name="logout" onclick="logout()"><img style="width: 200px; height: 200px" src="images/logout.png"></button>
             </div>
         </div>
-        <div id="personal_area">
+        <div id="clients" hidden>
+            <h2>Клиенты</h2>
+            <button onclick="blockClient()">Заблокировать</button>
+            <button onclick="unblockClient()">Разблокировать</button>
+            <button onclick="deleteClient()">Удалить</button>
+            <table>
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Статус</th>
+                    <th>Выбор</th>
+                </thead>
+                <tbody id="client_info">
 
+                </tbody>
+            </table>
         </div>
-        <div id="orders">
-            
+        <div id="tours" hidden>
+            <h2>Туры</h2>
+            <button>Создать</button>
+            <div id="add_tour" hidden="true">
+                <input type="text" name="tour_name" placeholder="Название" required>
+                <input type="text" id="tour_duration" placeholder="Длительность" required>
+                <input type="text" name="patronymic" placeholder="Отчество" required>
+                <button id="addTour" type="submit">Добавить</button>
+            </div>
+            <table>
+                <thead>
+                    <th>Название</th>
+                    <th>Длительность</th>
+                </thead>
+                <tbody id="tour_info">
+
+                </tbody>
+            </table>
+        </div>
+        <div id="resorts" hidden>
+            <h2>Курорты</h2>
+            <button onclick="blockResort()">Заблокировать</button>
+            <button onclick="unblockResort()">Разблокировать</button>
+            <table>
+                <thead>
+                    <th>Название</th>
+                    <th>Страна</th>
+                    <th>Статус</th>
+                    <th>Выбор</th>
+                </thead>
+                <tbody id="resort_info">
+
+                </tbody>
+            </table>
+        </div>
+        <div id="countries" hidden>
+            <h2>Страны</h2>
+            <table>
+                <thead>
+                    <th>Название</th>
+                    <th>Визовый режим</th>
+                    <th>Стоимость визы</th>
+                </thead>
+                <tbody id="country_info">
+
+                </tbody>
+            </table>
         </div>
     </body>
 </html>

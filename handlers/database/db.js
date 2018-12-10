@@ -127,3 +127,28 @@ module.exports.updateClientInfo = async (client,surname,name,patronymic,birthday
         return {error};
     }
 }
+
+module.exports.showClients = async () => {
+    let result = await manager.query('exec show_clients', {raw: true});
+    return result[0];
+}
+
+module.exports.showResorts = async () => {
+    let result = await manager.query('exec get_all_resorts', {raw: true});
+    return result[0];
+}
+
+module.exports.showCountries = async () => {
+    let result = await manager.query('exec show_countries', {raw: true});
+    return result[0];
+}
+
+module.exports.block = async (type,id) => {
+    let result = await manager.query(`exec add_to_black_list '${type}',${id}`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.unblock = async (type,id) => {
+    let result = await manager.query(`exec remove_from_black_list '${type}',${id}`, {raw: true});
+    return result[0][0];
+}

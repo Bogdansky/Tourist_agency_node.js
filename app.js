@@ -64,12 +64,13 @@ async function signIn(request, response, next){
   }
   else{
     userId = result.result_id;
+    console.log(userId);
     response.redirect(`/${result.type_of_user}/index.html`)
   }
 }
 
 async function signUp(request,response,next){
-  let result = database.signUp(request.body.login, request.body.password);
+  let result = await database.signUp(request.body.login, request.body.password);
   if (result.last_id){
     userId = result.last_id;
     response.redirect(`/client/index.html`)
@@ -125,7 +126,7 @@ async function checkId(request,response,next){
 }
 
 async function getResort(request,response,next){
-  let result = await database.getResort(resortId);
+  let result = await database.getResort(request.body.resortId);
   if(result.error){
     request.result = {error: result.error};
   }
@@ -147,7 +148,6 @@ async function analizeClientRequest(result){
   }
   if (result.photo){
     let name = `${__dirname}\\public\\client\\images\\`;
-    console.log(name);
     photoName = await file.createFile(result.photo,name,'images');
     result.photoName = photoName;
   }
@@ -186,6 +186,7 @@ async function showOrders(request,response,next){
 }
 
 async function getInfo(request, response, next){
+  console.log(userId);
   let result = await database.getClientInfo(userId);
   if (result.photo){
     await analizeClientRequest(result);
@@ -197,6 +198,61 @@ async function getInfo(request, response, next){
 
 async function updateClient(request,response,next){
   let result = await database.updateClientInfo(userId,request.body.surname,request.body.name,request.body.patronymic,request.body.birthday,request.body.photo);
+  request.result = result;
+  next();
+}
+
+app.get('/manager/show_clients', getClients, send);
+app.get('/manager/show_resorts', getResorts, send);
+app.get('/manager/show_countries', getCountries, send);
+app.get('/manager/client_block', blockClient, send);
+app.get('/manager/resort_block', blockResort, send);
+app.get('/manager/delete_client', deleteClient, send);
+app.get('/manager/delete_resort', deleteResort, send);
+app.get('/manager/destroy_base');
+app.post('/manager/add_resort');
+app.post('/manager/add_tour');
+
+async function getClients(request,response,next){
+  let result = await database.showClients();
+  console.log(result);
+  request.result = result;
+  next();
+}
+
+async function getResorts(request,response,next){
+  let result = await database.showResorts();
+  request.result = result;
+  next();
+}
+
+async function getCountries(request,response,next){
+  let result = await database.showCountries();
+  request.result = result;
+  next();
+}
+
+async function blockClient(request,response,next){
+  let result = null;
+  if (request.query.block==1){
+    result = await database.block('client', request.query.id || -1);
+  }
+  else{
+    result = await database.unblock('client', request.query.id || -1);
+  }
+  request.result = result;
+  next();
+}
+
+async function blockResort(request,response,next){
+  let result = null;
+  console.log(request.query);
+  if (request.query.block==1){
+    result = await database.block('resort', request.query.id || -1);
+  }
+  else{
+    result = await database.unblock('resort', request.query.id || -1);
+  }
   request.result = result;
   next();
 }

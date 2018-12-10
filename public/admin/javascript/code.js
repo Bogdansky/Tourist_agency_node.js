@@ -32,19 +32,25 @@ window.onload = () => {
             login: document.getElementsByName('login')[0].value || null,
             password: document.getElementsByName('password')[0].value || null
         };
-        $.ajax({
+        if (manager.password){
+            $.ajax({
             type: "POST",
             url: "/admin/create",
             data: manager,
             success: (data) => {
-                alert(data["message"] ? data["message"] : data["error"]);
-                if (data["message"]){
-                    delete data.message;
-                    delete data.password;
-                    appendManagerCell(manager);
+                    alert(data["message"] ? data["message"] : data["error"]);
+                    if (data["message"]){
+                        delete manager.message;
+                        delete manager.password;
+                        manager.id = data["id"];
+                        appendManagerCell(manager);
+                    }
                 }
-            }
-        })
+            })
+        }
+        else{
+            alert('Пустой пароль!')
+        }
     })
 }
 

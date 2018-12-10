@@ -93,7 +93,7 @@ function appendOrderCell(order){
 }
 
 function showResort(){
-    let id = $('input[name=tour]:checked').val();
+    let id = $('input[name=tour_action]:checked').val();
     if (id > 0){
         tryShowResort(id);
     }
@@ -123,11 +123,11 @@ function tryShowResort(id){
 
 function appendTourCell(tour){
     let row = document.createElement("tr");
-    row.id = tour.id;
-    row.setAttribute("name","tour");
+    row.setAttribute("name","tour_row");
     let radio = document.createElement('input');
     radio.type = "radio";
-    radio.name = "tour";
+    radio.id = tour.id;
+    radio.name = "tour_action";
     radio.value = tour.id_resort;
     delete tour.id_resort;
     delete tour.id;
@@ -141,7 +141,8 @@ function appendTourCell(tour){
 }
 
 function makeOrder(){
-    let id = $('input[name=tour]:checked').val();
+    //let id = $('input[name=tour_action]:checked').id;
+    let id = document.querySelector('input[name=tour_action]:checked').id;
     alert(id);
     if (id > 0 && confirm('Сделать заказ?')){
         tryDoOrder(id);
@@ -150,6 +151,10 @@ function makeOrder(){
         return;
     }
 }
+
+// function getRadioId(){
+//     for (let i = 0; i < document.get)
+// }
 
 function tryDoOrder(id){
     let abode = document.getElementById('hotel_class').value;
