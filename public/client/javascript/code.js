@@ -103,7 +103,7 @@ function showResort(){
 }
 
 function tryShowResort(id){
-    let result = confirm("Хотите просмотреть путёвку?");
+    let result = confirm("Хотите просмотреть курорт?");
     if (result){
         $.ajax({
             type: "GET",
@@ -141,7 +141,6 @@ function appendTourCell(tour){
 }
 
 function makeOrder(){
-    //let id = $('input[name=tour_action]:checked').id;
     let id = document.querySelector('input[name=tour_action]:checked').id;
     alert(id);
     if (id > 0 && confirm('Сделать заказ?')){
@@ -151,10 +150,6 @@ function makeOrder(){
         return;
     }
 }
-
-// function getRadioId(){
-//     for (let i = 0; i < document.get)
-// }
 
 function tryDoOrder(id){
     let abode = document.getElementById('hotel_class').value;

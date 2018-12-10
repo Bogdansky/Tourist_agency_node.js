@@ -126,7 +126,7 @@ async function checkId(request,response,next){
 }
 
 async function getResort(request,response,next){
-  let result = await database.getResort(request.body.resortId);
+  let result = await database.getResort(resortId);
   if(result.error){
     request.result = {error: result.error};
   }
@@ -207,11 +207,11 @@ app.get('/manager/show_resorts', getResorts, send);
 app.get('/manager/show_countries', getCountries, send);
 app.get('/manager/client_block', blockClient, send);
 app.get('/manager/resort_block', blockResort, send);
-app.get('/manager/delete_client', deleteClient, send);
-app.get('/manager/delete_resort', deleteResort, send);
 app.get('/manager/destroy_base');
-app.post('/manager/add_resort');
-app.post('/manager/add_tour');
+app.post('/manager/delete_client', deleteClient, send);
+app.post('/manager/delete_resort', deleteResort, send);
+app.post('/manager/add_resort', addResort, send);
+app.post('/manager/add_tour', addTour, send);
 
 async function getClients(request,response,next){
   let result = await database.showClients();
@@ -253,6 +253,30 @@ async function blockResort(request,response,next){
   else{
     result = await database.unblock('resort', request.query.id || -1);
   }
+  request.result = result;
+  next();
+}
+
+async function deleteClient(request,response,next){
+  let result = await database.deleteClient(request.body.id);
+  request.result = result;
+  next();
+}
+
+async function deleteResort(request,response,next){
+  let result = await database.deleteResort(request.body.id);
+  request.result = result;
+  next();
+}
+
+async function addResort(request,response,next){
+  let result = await database.addResort(request.body.country,request.body.resort);
+  request.result = result;
+  next();
+}
+
+async function addTour(request,response,next){
+  let result = await database.addTour(request.body.name,request.body.duration,request.body.resort,userId);
   request.result = result;
   next();
 }
