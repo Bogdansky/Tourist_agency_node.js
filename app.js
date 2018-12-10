@@ -71,13 +71,14 @@ async function signIn(request, response, next){
 
 async function signUp(request,response,next){
   let result = await database.signUp(request.body.login, request.body.password);
+  console.log(result);
   if (result.last_id){
     userId = result.last_id;
     response.redirect(`/client/index.html`)
   }
   else{
-    request.result = {status: result.status};
-    next();
+    response.set('Content-Type','text/html');
+    response.send(`${result.status}<a href="/">Вернуться обратно</a>`);
   }
 }
 

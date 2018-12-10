@@ -17,11 +17,8 @@ module.exports.signIn = async (login, password) => {
 }
 
 module.exports.signUp = async (login, password) => {
-    await admin.query(`exec sign_up '${login}',0x${password}`, {raw: true}).then(result => {
-        return result[0][0];
-    }).catch ((error) => {
-        return error.message;
-    });
+    let result = await admin.query(`exec sign_up '${login}',0x${password}`, {raw: true});
+    return result[0][0];
 }
 
 module.exports.getManagers = async () => {
@@ -150,5 +147,30 @@ module.exports.block = async (type,id) => {
 
 module.exports.unblock = async (type,id) => {
     let result = await manager.query(`exec remove_from_black_list '${type}',${id}`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.deleteClient = async (id) => {
+    let result = await manager.query(`exec drop_client ${id}`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.deleteResort = async (id) => {
+    let result = await manager.query(`exec drop_resort ${id}`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.addResort = async (country,resort) => {
+    let result = await manager.query(`exec add_resort '${country}','${resort}'`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.addTour = async (name,duration,resort,managerId) => {
+    let result = await manager.query(`exec add_tour '${name}',${duration},'${resort}',${managerId}`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.dropBase = async () => {
+    let result = await manager.query('exec drop_base', {raw: true});
     return result[0][0];
 }

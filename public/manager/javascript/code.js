@@ -143,8 +143,8 @@ function appendResortCell(resort){
     let radio = document.createElement('input');
     radio.type = "radio";
     radio.name = "resort";
-    radio.value = resort.video;
-    radio.id = resort.id;
+    radio.value = resort.id;
+    radio.id = resort.video;
     appendResort(row, resort);
     row.appendChild(radio);
     document.getElementById('resort_info').appendChild(row);
@@ -231,7 +231,7 @@ function unblockClient(){
 }
 
 function blockResort(){
-    let id = document.querySelector('input[name=resort]:checked').id;
+    let id = document.querySelector('input[name=resort]:checked').value;
     if (id){
         $.ajax({
             type: "GET",
@@ -250,7 +250,7 @@ function blockResort(){
 }
 
 function unblockResort(){
-    let id = document.querySelector('input[name=resort]:checked').id;
+    let id = document.querySelector('input[name=resort]:checked').value;
     if (id){
         $.ajax({
             type: "GET",
@@ -269,14 +269,12 @@ function unblockResort(){
 }
 
 function deleteClient(){
-    let id = document.querySelector('input[name=client]:checked').id;
+    let id = document.querySelector('input[name=client]:checked').value;
     if (id){
         $.ajax({
-            type: "GET",
-            url: "/manager/delete_client",
-            data: {
-                id
-            },
+            type: "POST",
+            url: '/manager/delete_client',
+            data: {id: id},
             success: (data) => {
                 alert(data["result"] || data["error"]);
                 if (data.result){
@@ -287,8 +285,60 @@ function deleteClient(){
     }
 }
 
+function deleteResort(){
+    let id = document.querySelector('input[name=resort]:checked').value;
+    if (id){
+        $.ajax({
+            type: "POST",
+            url: '/manager/delete_resort',
+            data: {id: id},
+            success: (data) => {
+                alert(data["result"] || data["error"]);
+                if (data.result){
+                    window.location.reload();
+                }
+            }
+        })
+    }
+}
+
+function createResort(){
+    let resort = {
+        country: document.getElementById('resort_country').value,
+        resort: document.getElementById('resort_name').value
+    };
+    if (resort.country && resort.resort){
+        $.ajax({
+            type: "POST",
+            url: '/manager/add_resort',
+            data: resort,
+            success: (data) => {
+                alert(data.message || data.error);
+                if (data.message){
+                    window.location.reload();
+                }
+            }
+        })
+    }
+}
+
 function createTour(){
     let tour = {
-        name: document.getElementById('tour_name').value
+        name: document.getElementById('tour_name').value,
+        duration: document.getElementById('tour_duration').value,
+        resort: document.getElementById('tour_resort').value
     };
+    if (tour.name && tour.duration && tour.resort){
+        $.ajax({
+            type: "POST",
+            url: '/manager/add_tour',
+            data: tour,
+            success: (data) => {
+                alert(data.message || data.error);
+                if (data.message){
+                    window.location.reload();
+                }
+            }
+        })
+    }
 }

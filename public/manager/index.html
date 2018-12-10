@@ -38,12 +38,12 @@
         </div>
         <div id="tours" hidden>
             <h2>Туры</h2>
-            <button>Создать</button>
+            <button onclick="let hidden = document.getElementById('add_tour').hidden; document.getElementById('add_tour').hidden = !hidden;">Создать</button>
             <div id="add_tour" hidden="true">
-                <input type="text" name="tour_name" placeholder="Название" required>
-                <input type="text" id="tour_duration" placeholder="Длительность" required>
-                <input type="text" name="patronymic" placeholder="Отчество" required>
-                <button id="addTour" type="submit">Добавить</button>
+                <input type="text" id="tour_name" placeholder="Название" required>
+                <input type="number" id="tour_duration" placeholder="Длительность" required>
+                <input type="text" id="tour_resort" placeholder="Курорт" required>
+                <button onclick="createTour()">Добавить</button>
             </div>
             <table>
                 <thead>
@@ -59,6 +59,13 @@
             <h2>Курорты</h2>
             <button onclick="blockResort()">Заблокировать</button>
             <button onclick="unblockResort()">Разблокировать</button>
+            <button onclick="deleteResort()">Удалить</button>
+            <button onclick="let hidden = document.getElementById('add_resort').hidden; document.getElementById('add_resort').hidden = !hidden;">Создать</button>
+            <div id="add_resort" hidden="true">
+                <input type="text" id="resort_country" placeholder="Страна" required>
+                <input type="text" id="resort_name" placeholder="Название" required>
+                <button id="addTour" onclick="createResort()">Добавить</button>
+            </div>
             <table>
                 <thead>
                     <th>Название</th>
