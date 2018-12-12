@@ -200,6 +200,6 @@ function fillClientInfo(data){
     document.getElementsByName('patronymic')[0].value = data.patronymic;
     document.getElementsByName('birthday')[0].value = data.birthday;
     if (data.photo){
-        document.getElementById('photo').setAttribute('src',data.photoName);
+        document.getElementById('photo').setAttribute('src',`./${data.photoName}`);
     }
 }

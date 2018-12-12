@@ -23,8 +23,11 @@
                 <input type="text" name="patronymic">
                 <input type="date" name="birthday">
                 <img id="photo" src="images/no.png">
-                <input type="file" accept="image/jpeg,image/png" name="photo">
                 <button onclick="updateClientInfo()">Изменить</button>
+            </form>
+            <form action="/client/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" accept="image/jpeg,image/png" name="file">
+                <input type="submit">
             </form>
             <div>
                 <table>

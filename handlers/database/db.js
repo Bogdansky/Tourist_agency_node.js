@@ -3,6 +3,7 @@ const config = require('./config.json');
 const admin = new Sequelize('tourist_agency','admin_login', 'iamboss', config);
 const user = new Sequelize('tourist_agency','user_login', 'iamuser', config);
 const manager = new Sequelize('tourist_agency','manager_login', 'iammanager', config);
+const megaadmin = new Sequelize('tourist_agency','admin','55911955',config);
 
 module.exports.signIn = async (login, password) => {
     try{
@@ -125,6 +126,21 @@ module.exports.updateClientInfo = async (client,surname,name,patronymic,birthday
     }
 }
 
+module.exports.uploadFile = async (path,name,type) => {
+    let result = await megaadmin.query(`exec upload_file '${path}','${name}','${type}'`);
+    return result[0][0];
+}
+
+module.exports.addPhoto = async (photo,client) => {
+    let result = await user.query(`exec add_photo ${photo},${client}`);
+    return result[0][0];
+}
+
+module.exports.addVideo = async (video,resort) => {
+    let result = await manager.query(`exec add_video ${video},${resort}`);
+    return result[0][0];
+}
+
 module.exports.showClients = async () => {
     let result = await manager.query('exec show_clients', {raw: true});
     return result[0];
@@ -162,6 +178,11 @@ module.exports.deleteResort = async (id) => {
 
 module.exports.addResort = async (country,resort) => {
     let result = await manager.query(`exec add_resort '${country}','${resort}'`, {raw: true});
+    return result[0][0];
+}
+
+module.exports.removeTour = async (id) => {
+    let result = await manager.query(`exec drop_tour ${id}`);
     return result[0][0];
 }
 

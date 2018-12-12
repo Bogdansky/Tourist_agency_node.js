@@ -2,11 +2,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const file = require('./handlers/files');
+const multer = require('multer');
 
 let resortId = 0;
 let userId = 0;
 
 let app = express();
+
+const storage = multer.diskStorage({
+  destination: './uploads/',
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 const validation = require('./handlers/valid');
 const sign = require('./handlers/sign');
@@ -21,14 +31,6 @@ app.use('/manager', express.static(__dirname + '/public/manager'));
 app.use('/admin', express.static(__dirname + '/public/admin'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
-
-app.set('view engine', 'pug')
 
 app.get('/', (req, res) => {
   res.redirect('/index/login.html');
@@ -116,11 +118,31 @@ app.get('/client/getcost', getCost, send);
 app.get('/client/info', getInfo, send);
 app.post('/client/create_order', makeOrder, send);
 app.post('/client/update', updateClient, send);
+app.post('/client/upload', upload.single('file'), fileReady);
+
+async function fileReady(req, res, next){
+  if (req.file){
+    let result = await database.uploadFile(`${__dirname}\\uploads\\`, req.file.originalname,'picture');
+    console.log(result);
+    if (result.result && userId){
+      let added = await database.addPhoto(result.result, userId);
+      res.set('Content-Type','text/html')
+      res.send(`${added.message || added.error}<a href="/client/index.html">Вернуться обратно</a>`);
+    }
+    else{
+      res.set('Content-Type','text/html')
+      res.send(`Загружен успешно<a href="/client/index.html">Вернуться обратно</a>`);
+    }
+  }
+  else{
+    res.set('Content-Type','text/html')
+    res.send(`Загрузка не удалась<a href="/client/index.html">Вернуться обратно</a>`);
+  }
+}
 
 async function checkId(request,response,next){
   request.result = await database.getResort(request.query.id);
   if (!request.result.error){
-    request.session.resortId = request.query.id;
     resortId = request.query.id;
   }
   next();
@@ -177,7 +199,7 @@ async function makeOrder(request, response, next){
 
 async function showOrders(request,response,next){
   let result = await database.showOrders(userId);
-  if (result[0].error){
+  if (result[0] && result[0].error){
     request.result = {error: result[0].error};
   }
   else{
@@ -213,6 +235,33 @@ app.post('/manager/delete_client', deleteClient, send);
 app.post('/manager/delete_resort', deleteResort, send);
 app.post('/manager/add_resort', addResort, send);
 app.post('/manager/add_tour', addTour, send);
+app.post('/manager/prepare_video', getId, send);
+app.post('/manager/upload', upload.single('file'), videoReady);
+app.post('/manager/drop_tour', removeTour, send);
+
+async function getId(request,response,next){
+
+}
+
+async function videoReady(req, res, next){ 
+  if (req.file){
+    let result = await database.uploadFile(`${__dirname}\\uploads\\`, req.file.originalname,'picture');
+    console.log(result);
+    if (result.result && userId){
+      let added = await database.addVideo(result.result, userId);
+      res.set('Content-Type','text/html')
+      res.send(`${added.message || added.error}<a href="/client/index.html">Вернуться обратно</a>`);
+    }
+    else{
+      res.set('Content-Type','text/html')
+      res.send(`Загружен успешно<a href="/client/index.html">Вернуться обратно</a>`);
+    }
+  }
+  else{
+    res.set('Content-Type','text/html')
+    res.send(`Загрузка не удалась<a href="/client/index.html">Вернуться обратно</a>`);
+  }
+}
 
 async function getClients(request,response,next){
   let result = await database.showClients();
@@ -278,6 +327,12 @@ async function addResort(request,response,next){
 
 async function addTour(request,response,next){
   let result = await database.addTour(request.body.name,request.body.duration,request.body.resort,userId);
+  request.result = result;
+  next();
+}
+
+async function removeTour(request,response,next){
+  let result = await database.removeTour(request.body.id);
   request.result = result;
   next();
 }

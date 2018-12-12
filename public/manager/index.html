@@ -38,6 +38,7 @@
         </div>
         <div id="tours" hidden>
             <h2>Туры</h2>
+            <button onclick="removeTour()">Удалить</button>
             <button onclick="let hidden = document.getElementById('add_tour').hidden; document.getElementById('add_tour').hidden = !hidden;">Создать</button>
             <div id="add_tour" hidden="true">
                 <input type="text" id="tour_name" placeholder="Название" required>
@@ -49,6 +50,7 @@
                 <thead>
                     <th>Название</th>
                     <th>Длительность</th>
+                    <th>Выбор</th>
                 </thead>
                 <tbody id="tour_info">
 
@@ -60,6 +62,9 @@
             <button onclick="blockResort()">Заблокировать</button>
             <button onclick="unblockResort()">Разблокировать</button>
             <button onclick="deleteResort()">Удалить</button>
+            <form>
+
+            </form>
             <button onclick="let hidden = document.getElementById('add_resort').hidden; document.getElementById('add_resort').hidden = !hidden;">Создать</button>
             <div id="add_resort" hidden="true">
                 <input type="text" id="resort_country" placeholder="Страна" required>
